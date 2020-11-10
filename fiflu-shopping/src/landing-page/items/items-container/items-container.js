@@ -25,7 +25,7 @@ export const ItemsContainer = () => {
   const [editMode, setEditMode] = useState(true); // todo should be false
   return (
     <div className="items-container">
-      {isLoading ? (
+      {isLoading && !loadedInitialItems ? (
         <CircularProgress />
       ) : (
         <>

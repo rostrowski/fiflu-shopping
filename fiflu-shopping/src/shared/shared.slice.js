@@ -1,10 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   createListIfDoesntExistApi,
-  addNewItem,
+  addNewItemApi,
+  addItemOrderApi,
   getAllItemsApi,
   deleteAllItemsApi,
 } from "../firebase/api";
+import { v4 as uuid } from "uuid";
 
 const initialState = {
   listId: "11", // TODO null
@@ -25,11 +27,16 @@ export const addItem = createAsyncThunk(
   "shared/addItem",
   async (name, { getState }) => {
     const { listId } = getState().shared;
+    const itemId = uuid();
 
-    await addNewItem(listId, {
-      crossedOut: false,
-      name,
-    });
+    await Promise.all([
+      addNewItemApi(listId, {
+        crossedOut: false,
+        name,
+        id: itemId,
+      }),
+      addItemOrderApi(listId, itemId),
+    ]);
   }
 );
 
@@ -111,11 +118,6 @@ export const sharedSlice = createSlice({
   },
 });
 
-export const {
-  joinList,
-  ackError,
-  subscribeToItems,
-  receiveItems,
-} = sharedSlice.actions;
+export const { joinList, ackError, receiveItems } = sharedSlice.actions;
 
 export default sharedSlice.reducer;

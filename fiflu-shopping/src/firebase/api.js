@@ -1,4 +1,6 @@
 import { firestore as db } from "./init-firebase";
+import firebase from "firebase";
+import { mergeWithOrder } from "../shared/merge-with-order";
 
 const withDisplayMessage = (error, displayMessage) => ({
   ...error,
@@ -34,21 +36,39 @@ export const subscribeToItemsApi = (func, listId) => {
     });
 };
 
+export const subscribeToItemsOrderApi = (func, listId) => {
+  return db
+    .collection(LIST_COLLECTION_ID)
+    .doc(listId)
+    .onSnapshot((querySnapshot) => {
+      func(querySnapshot.data().order);
+    });
+};
+
 export const getAllItemsApi = async (listId) => {
   try {
-    const snapshot = await db
+    const orderSnapshot = await db
+      .collection(LIST_COLLECTION_ID)
+      .doc(listId)
+      .get();
+
+    const order = orderSnapshot.data().order;
+
+    const itemsSnapshot = await db
       .collection(LIST_COLLECTION_ID)
       .doc(listId)
       .collection(LIST_ITEMS_COLLECTION_ID)
       .get();
 
-    return snapshot.docs.map((doc) => doc.data());
+    const items = itemsSnapshot.docs.map((doc) => doc.data());
+
+    return mergeWithOrder(items, order);
   } catch (e) {
     console.log(e);
   }
 };
 
-export const addNewItem = async (listId, item) => {
+export const addNewItemApi = async (listId, item) => {
   try {
     await db
       .collection(LIST_COLLECTION_ID)
@@ -58,6 +78,19 @@ export const addNewItem = async (listId, item) => {
   } catch (e) {
     console.log(e);
     throw withDisplayMessage(e, "Failed to add a new item");
+  }
+};
+
+export const addItemOrderApi = async (listId, itemId) => {
+  try {
+    const ref = db.collection(LIST_COLLECTION_ID).doc(listId);
+
+    await ref.update({
+      order: firebase.firestore.FieldValue.arrayUnion(itemId),
+    });
+  } catch (e) {
+    console.log(e);
+    throw withDisplayMessage(e, "Failed to add an order for a new item");
   }
 };
 

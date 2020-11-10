@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import OpenCreateList from "./open-create-list/open-create-list.component";
@@ -6,22 +6,32 @@ import OpenCreateList from "./open-create-list/open-create-list.component";
 import "./style.css";
 import { ItemsContainer } from "./items/items-container/items-container";
 import { FifluMenu } from "./menu/fiflu-menu";
-import { subscribeToItemsApi } from "../firebase/api";
+import { subscribeToItemsApi, subscribeToItemsOrderApi } from "../firebase/api";
 import { receiveItems } from "../shared/shared.slice";
+import { mergeWithOrder } from "../shared/merge-with-order";
 
 export const LandingPage = () => {
+  const [order, setOrder] = useState([]);
+  const [items, setItems] = useState([]);
   const listId = useSelector((state) => state.shared.listId);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (listId) {
-      const unsubscribe = subscribeToItemsApi(
-        (items) => dispatch(receiveItems(items)),
-        listId
-      );
+      subscribeToItemsApi((items) => {
+        setItems(items);
+      }, listId);
+
+      subscribeToItemsOrderApi((order) => {
+        setOrder(order);
+      }, listId);
     }
   }, [listId]);
+
+  useEffect(() => {
+    dispatch(receiveItems(mergeWithOrder(items, order)));
+  }, [items, order]);
 
   return (
     <div className="container">
