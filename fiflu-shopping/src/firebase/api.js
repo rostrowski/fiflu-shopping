@@ -94,6 +94,17 @@ export const addItemOrderApi = async (listId, itemId) => {
   }
 };
 
+export const setNewItemOrderApi = async (listId, newOrder) => {
+  try {
+    await db.collection(LIST_COLLECTION_ID).doc(listId).set({
+      order: newOrder,
+    });
+  } catch (e) {
+    console.log(e);
+    throw withDisplayMessage(e, "Failed to set order for an item");
+  }
+};
+
 export const toggleItemCrossedOut = async (listId, itemId) => {
   const ref = db
     .collection(LIST_COLLECTION_ID)
@@ -124,5 +135,16 @@ export const deleteAllItemsApi = async (listId) => {
   } catch (e) {
     console.log(e);
     throw withDisplayMessage(e, "Failed to delete all items");
+  }
+};
+
+export const deleteOrderApi = async (listId) => {
+  try {
+    await db.collection(LIST_COLLECTION_ID).doc(listId).set({
+      order: [],
+    });
+  } catch (e) {
+    console.log(e);
+    throw withDisplayMessage(e, "Failed to delete items order");
   }
 };

@@ -3,8 +3,10 @@ import {
   createListIfDoesntExistApi,
   addNewItemApi,
   addItemOrderApi,
+  setNewItemOrderApi,
   getAllItemsApi,
   deleteAllItemsApi,
+  deleteOrderApi,
 } from "../firebase/api";
 import { v4 as uuid } from "uuid";
 
@@ -13,6 +15,7 @@ const initialState = {
   loading: false,
   error: null,
   items: [],
+  itemsOrder: [],
   loadedInitialItems: false,
 };
 
@@ -40,6 +43,15 @@ export const addItem = createAsyncThunk(
   }
 );
 
+export const reorderItems = createAsyncThunk(
+  "shared/reorderItems",
+  async (order, { getState }) => {
+    const { listId } = getState().shared;
+
+    await setNewItemOrderApi(listId, order);
+  }
+);
+
 export const getAllItems = createAsyncThunk(
   "shared/getAllItems",
   async (_, { getState }) => {
@@ -55,7 +67,7 @@ export const deleteAllItems = createAsyncThunk(
   async (_, { getState }) => {
     const { listId } = getState().shared;
 
-    await deleteAllItemsApi(listId);
+    await Promise.all([deleteAllItemsApi(listId), deleteOrderApi(listId)]);
   }
 );
 
@@ -68,6 +80,9 @@ export const sharedSlice = createSlice({
     },
     receiveItems: (state, action) => {
       state.items = action.payload;
+    },
+    receiveOrder: (state, action) => {
+      state.itemsOrder = action.payload;
     },
   },
   extraReducers: {
@@ -118,6 +133,11 @@ export const sharedSlice = createSlice({
   },
 });
 
-export const { joinList, ackError, receiveItems } = sharedSlice.actions;
+export const {
+  joinList,
+  ackError,
+  receiveItems,
+  receiveOrder,
+} = sharedSlice.actions;
 
 export default sharedSlice.reducer;

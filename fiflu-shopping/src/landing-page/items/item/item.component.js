@@ -1,7 +1,11 @@
-import React from "react";
+import React, { forwardRef } from "react";
 
-const Item = ({ name, crossedOut }) => {
-  return <div>{name}</div>;
-};
+const Item = forwardRef(({ name, ...props }, ref) => {
+  return (
+    <div ref={ref} {...props}>
+      {name}
+    </div>
+  );
+});
 
 export default Item;

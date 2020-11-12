@@ -7,7 +7,7 @@ import "./style.css";
 import { ItemsContainer } from "./items/items-container/items-container";
 import { FifluMenu } from "./menu/fiflu-menu";
 import { subscribeToItemsApi, subscribeToItemsOrderApi } from "../firebase/api";
-import { receiveItems } from "../shared/shared.slice";
+import { receiveItems, receiveOrder } from "../shared/shared.slice";
 import { mergeWithOrder } from "../shared/merge-with-order";
 
 export const LandingPage = () => {
@@ -31,6 +31,7 @@ export const LandingPage = () => {
 
   useEffect(() => {
     dispatch(receiveItems(mergeWithOrder(items, order)));
+    dispatch(receiveOrder(order));
   }, [items, order]);
 
   return (
