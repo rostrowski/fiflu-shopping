@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Item from "../item/item.component";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useDispatch } from "react-redux";
@@ -16,6 +16,10 @@ const ItemsList = ({ items }) => {
 
     return result;
   };
+
+  useEffect(() => {
+    setOrderedItems(items);
+  }, [items])
 
   const onDragEnd = (result) => {
     if (!result.destination || !items?.length) {
