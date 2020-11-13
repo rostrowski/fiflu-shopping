@@ -1,3 +1,8 @@
+.add-new-item-container {
+  margin-top: 20px;
+  display: flex;
+}
+
 .add-item-button {
   margin-left: 15px !important;
 }

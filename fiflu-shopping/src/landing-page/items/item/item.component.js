@@ -1,8 +1,10 @@
 import React, { forwardRef } from "react";
 
+import "./style.css";
+
 const Item = forwardRef(({ name, ...props }, ref) => {
   return (
-    <div ref={ref} {...props}>
+    <div className="item" ref={ref} {...props}>
       {name}
     </div>
   );

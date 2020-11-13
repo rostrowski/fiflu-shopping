@@ -20,7 +20,7 @@ const AddNewItem = () => {
 
   return (
     <>
-      <form onSubmit={onAddNewItemClicked}>
+      <form onSubmit={onAddNewItemClicked} className="add-new-item-container">
         <TextField
           value={itemName}
           onChange={(e) => setItemName(e.target.value)}
