@@ -12,6 +12,7 @@ export const ItemsContainer = () => {
   const dispatch = useDispatch();
   const items = useSelector((state) => state.shared.items);
   const isLoading = useSelector((state) => state.shared.loading);
+  const editModeOn = useSelector((state) => state.shared.editModeOn);
   const loadedInitialItems = useSelector(
     (state) => state.shared.loadedInitialItems
   );
@@ -22,7 +23,6 @@ export const ItemsContainer = () => {
     }
   }, [loadedInitialItems]);
 
-  const [editMode, setEditMode] = useState(true); // todo should be false
   return (
     <div className="items-container">
       {isLoading && !loadedInitialItems ? (
@@ -30,17 +30,7 @@ export const ItemsContainer = () => {
       ) : (
         <>
           <ItemsList items={items} />
-          {editMode ? (
-            <AddNewItem />
-          ) : (
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={(_) => setEditMode(!editMode)}
-            >
-              +
-            </Button>
-          )}
+          {editModeOn && <AddNewItem />}
         </>
       )}
     </div>

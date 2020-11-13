@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Item from "../item/item.component";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { reorderItems } from "../../../shared/shared.slice";
 
 const ItemsList = ({ items }) => {
   const dispatch = useDispatch();
   const [orderedItems, setOrderedItems] = useState(items);
+  const draggingModeOn = useSelector((state) => state.shared.draggingModeOn);
 
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
@@ -19,7 +20,7 @@ const ItemsList = ({ items }) => {
 
   useEffect(() => {
     setOrderedItems(items);
-  }, [items])
+  }, [items]);
 
   const onDragEnd = (result) => {
     if (!result.destination || !items?.length) {
@@ -37,31 +38,45 @@ const ItemsList = ({ items }) => {
     dispatch(reorderItems(reorderedItems.map((item) => item.id)));
   };
 
-  return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="droppable">
-        {(provided) => (
-          <div {...provided.droppableProps} ref={provided.innerRef}>
-            {orderedItems.map((item, index) => {
-              return (
-                <Draggable key={item.id} draggableId={item.id} index={index}>
-                  {(provided) => (
-                    <Item
-                      name={item.name}
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                    ></Item>
-                  )}
-                </Draggable>
-              );
-            })}
-            {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
-    </DragDropContext>
-  );
+  const renderItemsWithToggle = () => {
+    return (
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="droppable">
+          {(provided) => (
+            <div {...provided.droppableProps} ref={provided.innerRef}>
+              {orderedItems.map((item, index) => {
+                return (
+                  <Draggable key={item.id} draggableId={item.id} index={index}>
+                    {(provided) => (
+                      <Item
+                        name={item.name}
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      />
+                    )}
+                  </Draggable>
+                );
+              })}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+    );
+  };
+
+  const renderItemsWithoutToggle = () => {
+    return (
+      <>
+        {orderedItems.map((item) => (
+          <Item name={item.name} />
+        ))}
+      </>
+    );
+  };
+
+  return draggingModeOn ? renderItemsWithToggle() : renderItemsWithoutToggle();
 };
 
 export default ItemsList;

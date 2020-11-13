@@ -17,6 +17,8 @@ const initialState = {
   items: [],
   itemsOrder: [],
   loadedInitialItems: false,
+  draggingModeOn: true, // false
+  editModeOn: true, // false
 };
 
 export const createListIfDoesntExist = createAsyncThunk(
@@ -84,6 +86,12 @@ export const sharedSlice = createSlice({
     receiveOrder: (state, action) => {
       state.itemsOrder = action.payload;
     },
+    toggleDraggingMode: (state) => {
+      state.draggingModeOn = !state.draggingModeOn;
+    },
+    toggleEditMode: (state) => {
+      state.editModeOn = !state.editModeOn;
+    },
   },
   extraReducers: {
     [createListIfDoesntExist.pending]: (state, action) => {
@@ -138,6 +146,8 @@ export const {
   ackError,
   receiveItems,
   receiveOrder,
+  toggleDraggingMode,
+  toggleEditMode,
 } = sharedSlice.actions;
 
 export default sharedSlice.reducer;
