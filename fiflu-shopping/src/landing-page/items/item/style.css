@@ -1,4 +1,28 @@
 .item {
   color: #c9c9ca;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  outline: none;
+  height: 30px;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.item-crossed-name {
+  text-decoration: line-through;
+}
+
+.item-crossed-name-text {
+  color: #4e4e54;
+}
+
+.check-icon {
+  font-size: 20px !important;
+  color: green;
+}
+
+.no-check-icon {
+  font-size: 13px !important;
 }

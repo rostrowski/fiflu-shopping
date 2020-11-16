@@ -50,6 +50,9 @@ const ItemsList = ({ items }) => {
                     {(provided) => (
                       <Item
                         name={item.name}
+                        id={item.id}
+                        crossedOut={item.crossedOut}
+                        key={item.id}
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
@@ -70,7 +73,12 @@ const ItemsList = ({ items }) => {
     return (
       <>
         {orderedItems.map((item) => (
-          <Item name={item.name} />
+          <Item
+            key={item.id}
+            name={item.name}
+            id={item.id}
+            crossedOut={item.crossedOut}
+          />
         ))}
       </>
     );

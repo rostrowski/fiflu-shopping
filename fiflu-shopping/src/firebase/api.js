@@ -74,7 +74,8 @@ export const addNewItemApi = async (listId, item) => {
       .collection(LIST_COLLECTION_ID)
       .doc(listId)
       .collection(LIST_ITEMS_COLLECTION_ID)
-      .add(item);
+      .doc(item.id)
+      .set(item);
   } catch (e) {
     console.log(e);
     throw withDisplayMessage(e, "Failed to add a new item");
@@ -101,20 +102,25 @@ export const setNewItemOrderApi = async (listId, newOrder) => {
     });
   } catch (e) {
     console.log(e);
-    throw withDisplayMessage(e, "Failed to set order for an item");
+    throw withDisplayMessage(e, "Failed to set an order for an item");
   }
 };
 
-export const toggleItemCrossedOut = async (listId, itemId) => {
-  const ref = db
-    .collection(LIST_COLLECTION_ID)
-    .doc(listId)
-    .collection(LIST_ITEMS_COLLECTION_ID)
-    .doc(itemId);
+export const toggleItemCrossedApi = async (listId, itemId) => {
+  try {
+    const ref = db
+      .collection(LIST_COLLECTION_ID)
+      .doc(listId)
+      .collection(LIST_ITEMS_COLLECTION_ID)
+      .doc(itemId);
 
-  const item = ref.get();
+    const item = (await ref.get()).data();
 
-  // todo
+    await ref.set({ crossedOut: !item.crossedOut }, { merge: true });
+  } catch (e) {
+    console.log(e);
+    throw withDisplayMessage(e, "Failed to toggle item crossed");
+  }
 };
 
 export const deleteAllItemsApi = async (listId) => {

@@ -7,17 +7,18 @@ import {
   getAllItemsApi,
   deleteAllItemsApi,
   deleteOrderApi,
+  toggleItemCrossedApi,
 } from "../firebase/api";
 import { v4 as uuid } from "uuid";
 
 const initialState = {
-  listId: "11", // TODO null
+  listId: null,
   loading: false,
   error: null,
   items: [],
   itemsOrder: [],
   loadedInitialItems: false,
-  draggingModeOn: true, // false
+  draggingModeOn: false,
   editModeOn: true, // false
 };
 
@@ -70,6 +71,15 @@ export const deleteAllItems = createAsyncThunk(
     const { listId } = getState().shared;
 
     await Promise.all([deleteAllItemsApi(listId), deleteOrderApi(listId)]);
+  }
+);
+
+export const toggleItemCrossed = createAsyncThunk(
+  "shared/toggleItemCrossed",
+  async (itemId, { getState }) => {
+    const { listId } = getState().shared;
+
+    await toggleItemCrossedApi(listId, itemId);
   }
 );
 
@@ -137,6 +147,11 @@ export const sharedSlice = createSlice({
     },
     [deleteAllItems.rejected]: (state, action) => {
       state.loading = false;
+      state.error = action.error;
+    },
+
+    [toggleItemCrossed.rejected]: (state, action) => {
+      state.error = action.error;
     },
   },
 });

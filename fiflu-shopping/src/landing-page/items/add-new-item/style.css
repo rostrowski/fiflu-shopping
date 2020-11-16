@@ -1,5 +1,6 @@
 .add-new-item-container {
   margin-top: 20px;
+  justify-content: center;
   display: flex;
 }
 
