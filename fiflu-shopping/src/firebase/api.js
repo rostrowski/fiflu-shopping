@@ -21,7 +21,7 @@ export const createListIfDoesntExistApi = async (listId) => {
   const listExists = await checkIfListExists(listId);
 
   if (!listExists) {
-    await db.collection(LIST_COLLECTION_ID).doc(listId).set({});
+    await db.collection(LIST_COLLECTION_ID).doc(listId).set({ order: [] });
   }
 };
 
