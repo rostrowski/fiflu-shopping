@@ -9,6 +9,7 @@ import { FifluMenu } from "./menu/fiflu-menu";
 import { subscribeToItemsApi, subscribeToItemsOrderApi } from "../firebase/api";
 import { receiveItems, receiveOrder } from "../shared/shared.slice";
 import { mergeWithOrder } from "../shared/merge-with-order";
+import { TopItemsDialog } from "./top-items-dialog/top-items.dialog";
 
 export const LandingPage = () => {
   const [order, setOrder] = useState([]);
@@ -34,7 +35,8 @@ export const LandingPage = () => {
     dispatch(receiveOrder(order));
   }, [items, order]);
 
-  return (
+  return [
+    <TopItemsDialog />,
     <div className="container">
       <div className="login-box">
         <div className="box-container">
@@ -50,6 +52,6 @@ export const LandingPage = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>,
+  ];
 };

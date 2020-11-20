@@ -7,6 +7,7 @@ import {
   deleteAllItems,
   toggleDraggingMode,
   toggleEditMode,
+  openTopItemsModal,
 } from "../../shared/shared.slice";
 
 import "./style.css";
@@ -41,6 +42,11 @@ export const FifluMenu = () => {
     handleClose();
   };
 
+  const handleSelectTopItemsClick = () => {
+    dispatch(openTopItemsModal());
+    handleClose();
+  };
+
   return (
     <>
       <Button onClick={handleClick}>
@@ -58,6 +64,9 @@ export const FifluMenu = () => {
         </MenuItem>
         <MenuItem onClick={handleToggleEditMode}>
           Set edit mode {editModeOn ? "off" : "on"}
+        </MenuItem>
+        <MenuItem onClick={handleSelectTopItemsClick}>
+          Select top items
         </MenuItem>
         <MenuItem onClick={handleClose}>Logout</MenuItem>
       </Menu>

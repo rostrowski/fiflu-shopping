@@ -8,6 +8,9 @@ import {
   deleteAllItemsApi,
   deleteOrderApi,
   toggleItemCrossedApi,
+  incrementItemCountApi,
+  deleteItemApi,
+  deleteItemOrderApi,
 } from "../firebase/api";
 import { v4 as uuid } from "uuid";
 
@@ -19,7 +22,8 @@ const initialState = {
   itemsOrder: [],
   loadedInitialItems: false,
   draggingModeOn: false,
-  editModeOn: true, // false
+  editModeOn: true,
+  isTopItemsModalOpen: false,
 };
 
 export const createListIfDoesntExist = createAsyncThunk(
@@ -42,6 +46,7 @@ export const addItem = createAsyncThunk(
         id: itemId,
       }),
       addItemOrderApi(listId, itemId),
+      incrementItemCountApi(listId, name),
     ]);
   }
 );
@@ -83,6 +88,18 @@ export const toggleItemCrossed = createAsyncThunk(
   }
 );
 
+export const deleteItem = createAsyncThunk(
+  "shared/deleteItem",
+  async (itemId, { getState }) => {
+    const { listId } = getState().shared;
+
+    await Promise.all([
+      deleteItemApi(listId, itemId),
+      deleteItemOrderApi(listId, itemId),
+    ]);
+  }
+);
+
 export const sharedSlice = createSlice({
   name: "shared",
   initialState,
@@ -101,6 +118,12 @@ export const sharedSlice = createSlice({
     },
     toggleEditMode: (state) => {
       state.editModeOn = !state.editModeOn;
+    },
+    openTopItemsModal: (state) => {
+      state.isTopItemsModalOpen = true;
+    },
+    closeTopItemsModal: (state) => {
+      state.isTopItemsModalOpen = false;
     },
   },
   extraReducers: {
@@ -153,6 +176,17 @@ export const sharedSlice = createSlice({
     [toggleItemCrossed.rejected]: (state, action) => {
       state.error = action.error;
     },
+
+    [deleteItem.pending]: (state) => {
+      state.loading = true;
+    },
+    [deleteItem.fulfilled]: (state) => {
+      state.loading = false;
+    },
+    [deleteItem.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error;
+    },
   },
 });
 
@@ -163,6 +197,8 @@ export const {
   receiveOrder,
   toggleDraggingMode,
   toggleEditMode,
+  openTopItemsModal,
+  closeTopItemsModal,
 } = sharedSlice.actions;
 
 export default sharedSlice.reducer;

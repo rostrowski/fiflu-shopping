@@ -21,7 +21,10 @@ export const createListIfDoesntExistApi = async (listId) => {
   const listExists = await checkIfListExists(listId);
 
   if (!listExists) {
-    await db.collection(LIST_COLLECTION_ID).doc(listId).set({ order: [] });
+    await db
+      .collection(LIST_COLLECTION_ID)
+      .doc(listId)
+      .set({ order: [], itemsCount: [] });
   }
 };
 
@@ -41,7 +44,7 @@ export const subscribeToItemsOrderApi = (func, listId) => {
     .collection(LIST_COLLECTION_ID)
     .doc(listId)
     .onSnapshot((querySnapshot) => {
-      func(querySnapshot.data().order);
+      func(querySnapshot.data()?.order);
     });
 };
 
@@ -92,6 +95,19 @@ export const addItemOrderApi = async (listId, itemId) => {
   } catch (e) {
     console.log(e);
     throw withDisplayMessage(e, "Failed to add an order for a new item");
+  }
+};
+
+export const incrementItemCountApi = async (listId, itemName) => {
+  try {
+    const ref = db.collection(LIST_COLLECTION_ID).doc(listId);
+
+    await ref.update({
+      [itemName]: firebase.firestore.FieldValue.increment(1),
+    });
+  } catch (e) {
+    console.log(e);
+    throw withDisplayMessage(e, "Failed to increment item count");
   }
 };
 
@@ -146,11 +162,38 @@ export const deleteAllItemsApi = async (listId) => {
 
 export const deleteOrderApi = async (listId) => {
   try {
-    await db.collection(LIST_COLLECTION_ID).doc(listId).set({
+    await db.collection(LIST_COLLECTION_ID).doc(listId).update({
       order: [],
     });
   } catch (e) {
     console.log(e);
     throw withDisplayMessage(e, "Failed to delete items order");
+  }
+};
+
+export const deleteItemApi = async (listId, itemId) => {
+  try {
+    await db
+      .collection(LIST_COLLECTION_ID)
+      .doc(listId)
+      .collection(LIST_ITEMS_COLLECTION_ID)
+      .doc(itemId)
+      .delete();
+  } catch (e) {
+    console.log(e);
+    throw withDisplayMessage(e, "Failed to delete an item");
+  }
+};
+
+export const deleteItemOrderApi = async (listId, itemId) => {
+  try {
+    const ref = db.collection(LIST_COLLECTION_ID).doc(listId);
+
+    await ref.update({
+      order: firebase.firestore.FieldValue.arrayRemove(itemId),
+    });
+  } catch (e) {
+    console.log(e);
+    throw withDisplayMessage(e, "Failed to delete item's order");
   }
 };
