@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { Menu as MenuIcon } from "@material-ui/icons";
 
 import {
-  deleteAllItems,
   toggleDraggingMode,
   toggleEditMode,
   openTopItemsModal,
+  openConfirmCleanListModal,
 } from "../../shared/shared.slice";
 
 import "./style.css";
@@ -28,7 +28,7 @@ export const FifluMenu = () => {
   };
 
   const handleCleanListClick = () => {
-    dispatch(deleteAllItems());
+    dispatch(openConfirmCleanListModal());
     handleClose();
   };
 

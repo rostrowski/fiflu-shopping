@@ -24,7 +24,7 @@
   height: 100%;
   display: grid;
   grid-template-columns: 35% auto;
-  overflow: scroll;
+  overflow: auto;
 }
 
 @media only screen and (max-width: 480px) {

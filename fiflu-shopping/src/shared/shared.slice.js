@@ -8,7 +8,6 @@ import {
   deleteAllItemsApi,
   deleteOrderApi,
   toggleItemCrossedApi,
-  incrementItemCountApi,
   deleteItemApi,
   deleteItemOrderApi,
 } from "../firebase/api";
@@ -24,6 +23,7 @@ const initialState = {
   draggingModeOn: false,
   editModeOn: true,
   isTopItemsModalOpen: false,
+  isConfirmCleanListModalOpen: false,
 };
 
 export const createListIfDoesntExist = createAsyncThunk(
@@ -124,6 +124,12 @@ export const sharedSlice = createSlice({
     closeTopItemsModal: (state) => {
       state.isTopItemsModalOpen = false;
     },
+    openConfirmCleanListModal: (state) => {
+      state.isConfirmCleanListModalOpen = true;
+    },
+    closeConfirmCleanListModal: (state) => {
+      state.isConfirmCleanListModalOpen = false;
+    },
   },
   extraReducers: {
     [createListIfDoesntExist.pending]: (state, action) => {
@@ -198,6 +204,8 @@ export const {
   toggleEditMode,
   openTopItemsModal,
   closeTopItemsModal,
+  openConfirmCleanListModal,
+  closeConfirmCleanListModal,
 } = sharedSlice.actions;
 
 export default sharedSlice.reducer;

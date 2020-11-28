@@ -1,0 +1,12 @@
+.clean-list-modal-content {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.clean-list-buttons {
+  margin: 10px;
+  align-self: center;
+  display: flex;
+  gap: 5px;
+}

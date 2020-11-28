@@ -10,6 +10,7 @@ import { subscribeToItemsApi, subscribeToItemsOrderApi } from "../firebase/api";
 import { receiveItems, receiveOrder } from "../shared/shared.slice";
 import { mergeWithOrder } from "../shared/merge-with-order";
 import { TopItemsDialog } from "./top-items-dialog/top-items.dialog";
+import { ConfirmCleanListDialog } from "./confirm-clean-list-dialog";
 
 export const LandingPage = () => {
   const [order, setOrder] = useState([]);
@@ -37,6 +38,7 @@ export const LandingPage = () => {
 
   return [
     <TopItemsDialog />,
+    <ConfirmCleanListDialog />,
     <div className="container">
       <div className="login-box">
         <div className="box-container">
