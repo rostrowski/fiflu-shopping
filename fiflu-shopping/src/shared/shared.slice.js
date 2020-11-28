@@ -46,7 +46,6 @@ export const addItem = createAsyncThunk(
         id: itemId,
       }),
       addItemOrderApi(listId, itemId),
-      incrementItemCountApi(listId, name),
     ]);
   }
 );
