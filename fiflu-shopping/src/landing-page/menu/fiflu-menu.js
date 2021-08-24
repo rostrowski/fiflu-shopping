@@ -45,7 +45,7 @@ export const FifluMenu = () => {
   const handleLogoutClicked = () => {
     dispatch(logout());
     closeMenu();
-  }
+  };
 
   return (
     <>

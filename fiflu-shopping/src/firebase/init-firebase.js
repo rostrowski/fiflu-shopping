@@ -16,7 +16,7 @@ const firestore = firebase.firestore();
 
 firestore
   .enablePersistence()
-  .then(() => console.log('Offline support enabled'))
-  .catch(e => console.error('Failed to enable offline support', e));
+  .then(() => console.log("Offline support enabled"))
+  .catch((e) => console.error("Failed to enable offline support", e));
 
 export { firestore };

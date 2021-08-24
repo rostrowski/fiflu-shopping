@@ -33,7 +33,7 @@ export const LandingPage = () => {
   useEffect(() => {
     dispatch(receiveItems(mergeWithOrder(items, order)));
     dispatch(receiveOrder(order));
-  }, [items, order]);
+  }, [items, order, dispatch]);
 
   return [
     <ConfirmCleanListDialog />,

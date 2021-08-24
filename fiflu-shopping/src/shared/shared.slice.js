@@ -127,7 +127,7 @@ export const sharedSlice = createSlice({
       state.listId = null;
       state.items = [];
       state.itemsOrder = [];
-    }
+    },
   },
   extraReducers: {
     [createListIfDoesntExist.pending]: (state, action) => {

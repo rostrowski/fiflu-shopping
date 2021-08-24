@@ -7,7 +7,6 @@ import "./style.css";
 
 const AddNewItem = () => {
   const [itemName, setItemName] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -24,7 +23,6 @@ const AddNewItem = () => {
         <TextField
           value={itemName}
           onChange={(e) => setItemName(e.target.value)}
-          disabled={isLoading}
           className="na"
         />
         <Button

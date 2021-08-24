@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Button, CircularProgress } from "@material-ui/core";
+import React, { useEffect } from "react";
+import { CircularProgress } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 
 import ItemsList from "../items-list/items-list.component";
@@ -21,7 +21,7 @@ export const ItemsContainer = () => {
     if (!loadedInitialItems) {
       dispatch(getAllItems());
     }
-  }, [loadedInitialItems]);
+  }, [loadedInitialItems, dispatch]);
 
   return (
     <div className="items-container">
