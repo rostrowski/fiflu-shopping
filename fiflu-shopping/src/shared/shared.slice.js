@@ -22,7 +22,6 @@ const initialState = {
   loadedInitialItems: false,
   draggingModeOn: false,
   editModeOn: true,
-  isTopItemsModalOpen: false,
   isConfirmCleanListModalOpen: false,
 };
 
@@ -118,18 +117,17 @@ export const sharedSlice = createSlice({
     toggleEditMode: (state) => {
       state.editModeOn = !state.editModeOn;
     },
-    openTopItemsModal: (state) => {
-      state.isTopItemsModalOpen = true;
-    },
-    closeTopItemsModal: (state) => {
-      state.isTopItemsModalOpen = false;
-    },
     openConfirmCleanListModal: (state) => {
       state.isConfirmCleanListModalOpen = true;
     },
     closeConfirmCleanListModal: (state) => {
       state.isConfirmCleanListModalOpen = false;
     },
+    logout: (state) => {
+      state.listId = null;
+      state.items = [];
+      state.itemsOrder = [];
+    }
   },
   extraReducers: {
     [createListIfDoesntExist.pending]: (state, action) => {
@@ -202,10 +200,9 @@ export const {
   receiveOrder,
   toggleDraggingMode,
   toggleEditMode,
-  openTopItemsModal,
-  closeTopItemsModal,
   openConfirmCleanListModal,
   closeConfirmCleanListModal,
+  logout,
 } = sharedSlice.actions;
 
 export default sharedSlice.reducer;

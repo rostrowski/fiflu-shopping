@@ -6,8 +6,8 @@ import { Menu as MenuIcon } from "@material-ui/icons";
 import {
   toggleDraggingMode,
   toggleEditMode,
-  openTopItemsModal,
   openConfirmCleanListModal,
+  logout,
 } from "../../shared/shared.slice";
 
 import "./style.css";
@@ -23,29 +23,29 @@ export const FifluMenu = () => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const closeMenu = () => {
     setAnchorEl(null);
   };
 
   const handleCleanListClick = () => {
     dispatch(openConfirmCleanListModal());
-    handleClose();
+    closeMenu();
   };
 
   const handleToggleDraggingMode = () => {
     dispatch(toggleDraggingMode());
-    handleClose();
+    closeMenu();
   };
 
   const handleToggleEditMode = () => {
     dispatch(toggleEditMode());
-    handleClose();
+    closeMenu();
   };
 
-  const handleSelectTopItemsClick = () => {
-    dispatch(openTopItemsModal());
-    handleClose();
-  };
+  const handleLogoutClicked = () => {
+    dispatch(logout());
+    closeMenu();
+  }
 
   return (
     <>
@@ -56,7 +56,7 @@ export const FifluMenu = () => {
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl)}
-        onClose={handleClose}
+        onClose={closeMenu}
       >
         <MenuItem onClick={handleCleanListClick}>Clean list</MenuItem>
         <MenuItem onClick={handleToggleDraggingMode}>
@@ -65,10 +65,7 @@ export const FifluMenu = () => {
         <MenuItem onClick={handleToggleEditMode}>
           Set edit mode {editModeOn ? "off" : "on"}
         </MenuItem>
-        <MenuItem onClick={handleSelectTopItemsClick}>
-          Select top items
-        </MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+        <MenuItem onClick={handleLogoutClicked}>Logout</MenuItem>
       </Menu>
     </>
   );

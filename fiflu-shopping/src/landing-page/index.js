@@ -9,7 +9,6 @@ import { FifluMenu } from "./menu/fiflu-menu";
 import { subscribeToItemsApi, subscribeToItemsOrderApi } from "../firebase/api";
 import { receiveItems, receiveOrder } from "../shared/shared.slice";
 import { mergeWithOrder } from "../shared/merge-with-order";
-import { TopItemsDialog } from "./top-items-dialog/top-items.dialog";
 import { ConfirmCleanListDialog } from "./confirm-clean-list-dialog";
 
 export const LandingPage = () => {
@@ -37,7 +36,6 @@ export const LandingPage = () => {
   }, [items, order]);
 
   return [
-    <TopItemsDialog />,
     <ConfirmCleanListDialog />,
     <div className="container">
       <div className="login-box">
