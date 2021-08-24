@@ -98,20 +98,6 @@ export const addItemOrderApi = async (listId, itemId) => {
   }
 };
 
-// not used for now
-export const incrementItemCountApi = async (listId, itemName) => {
-  try {
-    const ref = db.collection(LIST_COLLECTION_ID).doc(listId);
-
-    await ref.update({
-      [itemName]: firebase.firestore.FieldValue.increment(1),
-    });
-  } catch (e) {
-    console.log(e);
-    throw withDisplayMessage(e, "Failed to increment item count");
-  }
-};
-
 export const setNewItemOrderApi = async (listId, newOrder) => {
   try {
     await db.collection(LIST_COLLECTION_ID).doc(listId).set({
