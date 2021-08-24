@@ -1,0 +1,11 @@
+version: 1
+frontend:
+  phases:
+    build:
+      commands: [cd fiflu-shopping, npm i, npm run build]
+  artifacts:
+    baseDirectory: fiflu-shopping/build
+    files:
+      - '**/*'
+  cache:
+    paths: []
