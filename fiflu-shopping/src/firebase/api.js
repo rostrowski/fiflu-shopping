@@ -1,5 +1,4 @@
-import { firestore as db } from "./init-firebase";
-import firebase from "firebase";
+import firebase, { firestore as db } from "./init-firebase";
 import { mergeWithOrder } from "../shared/merge-with-order";
 
 const withDisplayMessage = (error, displayMessage) => ({

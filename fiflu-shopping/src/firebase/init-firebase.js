@@ -1,4 +1,5 @@
-import firebase from "firebase";
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCJVklNq8MxVWxkscPruVzOjRtDXWKpoCE",
@@ -10,9 +11,9 @@ const firebaseConfig = {
   appId: "1:103951860241:web:93597e3330752057f727b0",
 };
 
-firebase.initializeApp(firebaseConfig);
+const firebaseApp = firebase.initializeApp(firebaseConfig);
 
-const firestore = firebase.firestore();
+const firestore = firebaseApp.firestore();
 
 firestore
   .enablePersistence()
@@ -20,3 +21,4 @@ firestore
   .catch((e) => console.error("Failed to enable offline support", e));
 
 export { firestore };
+export default firebase;
